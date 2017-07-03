@@ -31,46 +31,49 @@ public class RailwayTime {
 		return begin + c + end;
 	}
 
-	public static List<Integer> getHighestTime(Set<String> set)
-			throws IllegalAccessException {
+	public static List<Integer> getHighestTime(Set<String> set) {
 		List<Integer> times = new ArrayList<Integer>();
 		for (String s : set) {
 			if (!s.startsWith("4")) {
 				if (!s.startsWith("3")) {
 					times.add(Integer.valueOf(s));
 				}
-			} else {
-				throw new IllegalAccessException("Invalid Input");
 			}
 		}
 		Collections.sort(times);
 		List<String> ts = formatTime(times);
 		System.out.println("List of possible Times :" + ts);
+		if (ts.size() != 0) {
+			System.out.println("HighestTime :"
+					+ formater(ts.get(ts.size() - 1)));
+		} else {
+			System.out.println("Invalid output");
+		}
 		return times;
 	}
 
 	private static List<String> formatTime(List<Integer> times) {
 		List<String> ts = new ArrayList<String>();
-		String s = "";
 		for (int i : times) {
-			s = String.valueOf(i);
-			ts.add(formater(s));
+			String s = formater(String.valueOf(i));
+			if ((Integer.valueOf(s.split(":")[0]) <= 23)
+					&& (Integer.valueOf(s.split(":")[1]) <= 60)) {
+				ts.add(formater(String.valueOf(i)));
+			}
 		}
 		return ts;
 	}
 
 	private static String formater(String s) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(s.substring(0, 2)).append(":")
-				.append(s.substring(2, s.length()));
-		return sb.toString();
+		return new StringBuffer().append(s.substring(0, 2)).append(":")
+				.append(s.substring(2, s.length())).toString();
+
 	}
 
-	public static void main(String[] args) throws IllegalAccessException {
-		String s2 = "1234";
+	public static void main(String[] args) {
+		String s2 = "3624";
 		Set<String> set = permutationFinder(s2);
-		List<Integer> times = getHighestTime(set);
-		System.out.println("HighestTime :"
-				+ formater(String.valueOf(times.get(times.size() - 1))));
+		getHighestTime(set);
+
 	}
 }
